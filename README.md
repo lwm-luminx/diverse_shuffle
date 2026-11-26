@@ -78,7 +78,7 @@ dpp_batch: 8)`, passed as `settings:`.
 bundle install
 bundle exec rake compile   # builds the Rust extension (needs a Rust toolchain)
 bundle exec rspec          # specs, including the Rust engine against the Ruby one
-cargo test --manifest-path ext/diverse_shuffle/Cargo.toml
+cargo test --manifest-path ext/diverse_shuffle/Cargo.toml --no-default-features
 ```
 
 ## Release

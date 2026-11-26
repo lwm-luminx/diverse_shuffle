@@ -9,5 +9,10 @@ rust-version = "1.85"
 [lib]
 crate-type = ["cdylib", "rlib"]
 
+[features]
+# The Ruby glue. `cargo test --no-default-features` tests the engine alone, with nothing to link against Ruby.
+default = ["ruby"]
+ruby = ["dep:magnus"]
+
 [dependencies]
-magnus = "0.8"
+magnus = { version = "0.8", optional = true }

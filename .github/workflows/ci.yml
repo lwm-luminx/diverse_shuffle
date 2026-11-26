@@ -24,7 +24,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
           cargo-cache: true
-      - run: cargo test --manifest-path ext/diverse_shuffle/Cargo.toml
+      - run: cargo test --manifest-path ext/diverse_shuffle/Cargo.toml --no-default-features
       - run: bundle exec rake compile
       - name: specs, Rust engine checked against the Ruby one
         run: bundle exec rspec
