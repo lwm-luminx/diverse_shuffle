@@ -1,0 +1,37 @@
+plugins:
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - vendor/**/*
+    - tmp/**/*
+    - target/**/*
+
+Layout/LineLength:
+  Max: 120
+
+Style/Documentation:
+  Exclude: [spec/**/*]
+
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/ExampleLength:
+  Max: 20
+
+# Engine::Ruby is held line for line to the Rust engine (ext/diverse_shuffle/src/engine.rs) and to the app it came
+# from, so it stays one class with the same methods; these limits are its current sizes, so they don't grow.
+Metrics/ClassLength:
+  Max: 170
+Metrics/AbcSize:
+  Max: 24
+Metrics/CyclomaticComplexity:
+  Max: 9
+Metrics/PerceivedComplexity:
+  Max: 10
+Metrics/MethodLength:
+  Max: 13
+Metrics/ParameterLists:
+  Exclude: [lib/diverse_shuffle/pool.rb]

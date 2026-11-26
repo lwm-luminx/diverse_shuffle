@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: specs (Ruby ${{ matrix.ruby }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        ruby: ['3.4', '4.0']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oxidize-rb/actions/setup-ruby-and-rust@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+          cargo-cache: true
+      - run: cargo test --manifest-path ext/diverse_shuffle/Cargo.toml --no-default-features
+      - run: bundle exec rake compile
+      - name: specs, Rust engine checked against the Ruby one
+        run: bundle exec rspec
+      - name: specs, Ruby engine alone
+        run: DIVERSE_SHUFFLE_ENGINE=ruby bundle exec rspec
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oxidize-rb/actions/setup-ruby-and-rust@v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+      - run: bundle exec rubocop
+      - run: cargo fmt --check && cargo clippy --manifest-path ext/diverse_shuffle/Cargo.toml -- -D warnings
+      - run: gem build diverse_shuffle.gemspec

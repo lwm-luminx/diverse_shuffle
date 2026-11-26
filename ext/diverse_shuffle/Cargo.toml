@@ -1,0 +1,18 @@
+[package]
+name = "diverse_shuffle"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+rust-version = "1.85"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# The Ruby glue. `cargo test --no-default-features` tests the engine alone, with nothing to link against Ruby.
+default = ["ruby"]
+ruby = ["dep:magnus"]
+
+[dependencies]
+magnus = { version = "0.8", optional = true }
